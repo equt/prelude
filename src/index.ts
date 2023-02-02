@@ -39,6 +39,10 @@ Array.prototype.intersperse = function (element) {
   }, [])
 }
 
+Array.prototype.product = function <U>(other: Array<U>) {
+  return this.flatMap(i => other.map<[unknown, U]>(j => [i, j]))
+}
+
 Array.prototype.zipWith = function <U, O>(
   other: Array<U>,
   f: (a: unknown, b: U) => O,

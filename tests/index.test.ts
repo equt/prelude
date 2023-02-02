@@ -75,6 +75,20 @@ it('Array.prototype.intersperse', () => {
   expect(([] as Array<number>).intersperse(0)).toEqual([])
 })
 
+it('Array.prototype.product', () => {
+  expect([1, 2, 3].product([4, 5, 6])).toEqual([
+    [1, 4],
+    [1, 5],
+    [1, 6],
+    [2, 4],
+    [2, 5],
+    [2, 6],
+    [3, 4],
+    [3, 5],
+    [3, 6],
+  ])
+})
+
 it('Array.prototype.zipWith', () => {
   expect([42, 42, 42].zipWith([0, 0, 0], (a, b) => a + b)).toEqual([42, 42, 42])
   expect([42, 42, 42].zipWith([0, 0], (a, b) => a + b)).toEqual([42, 42])

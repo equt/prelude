@@ -27,6 +27,7 @@ interface Array<T> {
    * If the array contains only one element, return that exact element. Otherwise, throw `ExactOneElementError`.
    */
   exact(): T
+
   /**
    * Create a shallow copy of the array
    */
@@ -56,6 +57,11 @@ interface Array<T> {
    * Insert a particular element betweem each element of the adapted iterator.
    */
   intersperse(element: T): Array<T>
+
+  /**
+   * Create the cartesian product with another array
+   */
+  product(other: Array<U>): Array<[T, U]>
 
   /**
    *
