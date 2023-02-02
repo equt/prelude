@@ -7,12 +7,12 @@
   },
   "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",
-  "types": "./dist/index.d.ts",
+  "types": "index.d.ts",
   "exports": {
     ".": {
       "require": "./dist/index.cjs",
       "import": "./dist/index.mjs",
-      "types": "./dist/index.d.ts"
+      "types": "./index.d.ts"
     }
   },
   "files": [
@@ -48,7 +48,6 @@
       "src/index"
     ],
     "clean": true,
-    "declaration": true,
     "rollup": {
       "emitCJS": true
     }
