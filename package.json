@@ -18,7 +18,8 @@
   "files": [
     "README.md",
     "LICENSE.md",
-    "dist"
+    "dist",
+    "index.d.ts"
   ],
   "scripts": {
     "prepare": "husky install",
