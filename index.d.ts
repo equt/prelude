@@ -61,7 +61,7 @@ interface Array<T> {
   /**
    * Create the cartesian product with another array
    */
-  product(other: Array<U>): Array<[T, U]>
+  product<U>(other: Array<U>): Array<[T, U]>
 
   /**
    *
