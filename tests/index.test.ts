@@ -27,7 +27,12 @@ it('isNonNullable', () => {
   expect(isNonNullable(0)).toBeTruthy()
 })
 
-it('Array.prototyp.copy', () => {
+it('Array.prototype.exact', () => {
+  expect([42].exact()).toEqual(42)
+  expect(() => [42, 42].exact()).toThrow()
+})
+
+it('Array.prototype.copy', () => {
   const origin = [42, 42],
     copy = origin.copy()
   expect(copy).toEqual([42, 42])

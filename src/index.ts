@@ -1,3 +1,10 @@
+Array.prototype.exact = function () {
+  if (this.length === 1) return this[0]
+  const error = Error('More than one element has been found in the array')
+  error.name = 'ExactOneElementError'
+  throw error
+}
+
 Array.prototype.copy = function () {
   return [...this]
 }

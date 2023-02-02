@@ -24,6 +24,10 @@ declare function isNonNullable<T>(x: T): x is NonNullable<T>
 
 interface Array<T> {
   /**
+   * If the array contains only one element, return that exact element. Otherwise, throw `ExactOneElementError`.
+   */
+  exact(): T
+  /**
    * Create a shallow copy of the array
    */
   copy(): Array<T>
