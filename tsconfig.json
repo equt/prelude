@@ -1,0 +1,8 @@
+{
+  "extends": "@equt/tsconfig/tsconfig.json",
+  "compilerOptions": {
+    "incremental": false,
+    "module": "ESNext",
+    "target": "ES6"
+  }
+}
