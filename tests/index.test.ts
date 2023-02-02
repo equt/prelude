@@ -1,5 +1,27 @@
 import '../src'
 
+it('absurd', () => {
+  const v = 'a' as const
+  switch (v) {
+    case 'a':
+      break
+    default:
+      absurd(v)
+  }
+
+  expect(() => absurd(42 as unknown as never)).toThrow()
+})
+
+it('unreachable', () => {
+  expect(() => unreachable()).toThrow()
+  expect(() => unreachable('42')).toThrow('42')
+})
+
+it('todo', () => {
+  expect(() => todo()).toThrow()
+  expect(() => todo('42')).toThrow('42')
+})
+
 it('debug', () => {
   const log = globalThis.console.log
   const fake = jest.fn()

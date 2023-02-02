@@ -60,10 +60,18 @@ Array.prototype.zip = function (other) {
   return this.zipWith(other, (a, b) => [a, b])
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+globalThis.absurd = function <A>(_: never): A {
+  throw new Error('Boom! `absurd` got called')
+}
+
 globalThis.debug = function <A>(x: A): A {
   console.log(x)
   return x
 }
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+globalThis.hole = absurd as any
 
 globalThis.range = function (start, end) {
   const accumulator: Array<number> = []
@@ -71,6 +79,16 @@ globalThis.range = function (start, end) {
     accumulator.push(i)
   }
   return accumulator
+}
+
+globalThis.todo = function (message) {
+  throw new Error(message ?? 'A function marked as TODO has been called')
+}
+
+globalThis.unreachable = function (message) {
+  throw new Error(
+    message ?? 'A condition branch marked as unreachable has been reached',
+  )
 }
 
 globalThis.isNullable = function (x): x is undefined | null {

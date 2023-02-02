@@ -3,14 +3,34 @@ type Waitable<A> = Promise<A> | A
 type Nullable<A> = A | undefined | null
 
 /**
+ * x falso quodlibet EXPLOSION !!!
+ * */
+declare function absurd<A>(_: never): A
+
+/**
  * Log the evaluated expression to the console and return the result
  */
 declare function debug<A>(x: A): A
 
 /**
+ * A type hole
+ */
+declare function hole<A>(): A
+
+/**
  * Create an array ranges from `start` (inclusive) to `end` (exclusive), both `start` and `end` have to be integers.
  */
 declare function range(start: number, end: number): Array<number>
+
+/**
+ * Mark the function as not implemented
+ */
+declare function todo<A>(message?: string): A
+
+/**
+ * Mark the condition as unreachable
+ */
+declare function unreachable<A>(message?: string): A
 
 /**
  * Assert `x` is `undefined` or `null`
