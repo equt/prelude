@@ -1,9 +1,25 @@
 {
   "name": "@equt/prelude",
   "version": "0.1.0",
+  "license": "MIT",
   "publishConfig": {
     "access": "public"
   },
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "require": "./dist/index.cjs",
+      "import": "./dist/index.mjs",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "README.md",
+    "LICENSE.md",
+    "dist"
+  ],
   "scripts": {
     "prepare": "husky install",
     "build": "unbuild",
