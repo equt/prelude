@@ -1,5 +1,14 @@
 import '../src'
 
+it('debug', () => {
+  const log = globalThis.console.log
+  const fake = jest.fn()
+  globalThis.console.log = fake
+  debug(42)
+  expect(fake).toBeCalledWith(42)
+  globalThis.console.log = log
+})
+
 it('range', () => {
   expect(range(0, 3)).toEqual([0, 1, 2])
   expect(range(0, 0)).toEqual([])

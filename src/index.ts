@@ -6,6 +6,11 @@ declare global {
   type Nullable<A> = A | undefined | null
 
   /**
+   * Log the evaluated expression to the console and return the result
+   */
+  function debug<A>(x: A): A
+
+  /**
    * Create an array ranges from `start` (inclusive) to `end` (exclusive), both `start` and `end` have to be integers.
    */
   function range(start: number, end: number): Array<number>
@@ -113,6 +118,11 @@ Array.prototype.zipWith = function <U, O>(
 
 Array.prototype.zip = function (other) {
   return this.zipWith(other, (a, b) => [a, b])
+}
+
+globalThis.debug = function <A>(x: A): A {
+  console.log(x)
+  return x
 }
 
 globalThis.range = function (start, end) {
