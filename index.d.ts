@@ -73,6 +73,11 @@ interface Array<T> {
   filterMap<U>(f: (element: T) => Nullable<U>): Array<U>
 
   /**
+   * Apply the function to the elements and returns the first non-nullable result
+   */
+  findMap<U>(f: (element: T) => Nullable<U>): Nullable<U>
+
+  /**
    * Inspect each element in the array.
    */
   inspect(f: (element: T) => void): Array<T>

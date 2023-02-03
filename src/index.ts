@@ -26,6 +26,14 @@ Array.prototype.filterMap = function <U>(f: (element: unknown) => Nullable<U>) {
   return this.map(f).filter(isNonNullable)
 }
 
+Array.prototype.findMap = function <U>(f: (element: unknown) => Nullable<U>) {
+  for (const element of this) {
+    const mapped = f(element)
+    if (isNonNullable(mapped)) return mapped
+  }
+  return
+}
+
 Array.prototype.inspect = function (f) {
   this.forEach(f)
   return this
