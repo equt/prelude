@@ -35,6 +35,7 @@ Array.prototype.findMap = function <U>(f: (element: unknown) => Nullable<U>) {
 }
 
 Array.prototype.group = function (f) {
+  if (this.length === 0) return []
   return this.windows<[unknown, unknown]>(2).reduce<Array<Array<unknown>>>(
     (accumulator, [a, b], i, self) => {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
