@@ -78,6 +78,11 @@ interface Array<T> {
   findMap<U>(f: (element: T) => Nullable<U>): Nullable<U>
 
   /**
+   * Group elements using a prediction over an overlapping two-windowed view
+   * */
+  group(f: (a: T, b: T) => boolean): Array<Array<T>>
+
+  /**
    * Inspect each element in the array.
    */
   inspect(f: (element: T) => void): Array<T>

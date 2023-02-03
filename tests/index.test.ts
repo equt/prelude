@@ -92,6 +92,18 @@ it('Array.prototype.findMap', () => {
   expect([0, 42, 84].findMap(n => (n >= 42 ? n : undefined))).toEqual(42)
 })
 
+it('Array.prototype.group', () => {
+  expect([42, 42, 42, 0, 0].group((a, b) => a === b)).toEqual([
+    [42, 42, 42],
+    [0, 0],
+  ])
+  expect([42, 42, 42, 0, 0, 42].group((a, b) => a === b)).toEqual([
+    [42, 42, 42],
+    [0, 0],
+    [42],
+  ])
+})
+
 it('Array.prototype.inspect', () => {
   const accumulator: Array<number> = []
   ;[42, 0].inspect(n => accumulator.push(n))
