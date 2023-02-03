@@ -70,7 +70,7 @@ interface Array<T> {
   /**
    * Return subarrays that each contains a fixed number of elements, determined by `size`. The last chunk will be shorter if there aren't enough elements.
    */
-  chunks(size: number): Array<Array<T>>
+  chunks<C extends Array<T> = Array<T>>(size: number): Array<C>
 
   /**
    * Mapping the element to an optional new type, then filter out `undefined` and `null`
