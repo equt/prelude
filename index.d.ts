@@ -103,6 +103,13 @@ interface Array<T> {
   takeWhile(f: (element: T) => boolean): Array<T>
 
   /**
+   * Create an array containing all contiguous, overlapping windows of length `size`.
+   *
+   * The `size` has to be an integer. If the original array is shorter than `size`, an empty array will be returned.
+   */
+  windows<W extends Array<T>>(size: number): Array<W>
+
+  /**
    *
    * Zip with another array using function. Rest elements will be discarded if lengths of two arrays are not equal.
    */

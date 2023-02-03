@@ -76,6 +76,20 @@ Array.prototype.takeWhile = function (f) {
   return accumulator
 }
 
+Array.prototype.windows = function <W extends Array<unknown> = Array<unknown>>(
+  size: number,
+): Array<W> {
+  if (size > this.length) return []
+  const accumulator: Array<Array<unknown>> = []
+
+  for (let i = 0; i < this.length; i++) {
+    if (i + (size | 0) > this.length) break
+    accumulator.push(this.slice(i, i + (size | 0)))
+  }
+
+  return accumulator as Array<W>
+}
+
 Array.prototype.zipWith = function <U, O>(
   other: Array<U>,
   f: (a: unknown, b: U) => O,

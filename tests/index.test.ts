@@ -133,6 +133,20 @@ it('Array.prototype.takeWhile', () => {
   expect([].takeWhile(n => n === 42)).toEqual([])
 })
 
+it('Array.prototype.windows', () => {
+  expect([0, 42, 21, 10.5].windows(2)).toEqual([
+    [0, 42],
+    [42, 21],
+    [21, 10.5],
+  ])
+  expect([0, 42, 21, 10.5].windows(3)).toEqual([
+    [0, 42, 21],
+    [42, 21, 10.5],
+  ])
+  expect([0, 42].windows(2)).toEqual([[0, 42]])
+  expect([0].windows(2)).toEqual([])
+})
+
 it('Array.prototype.zipWith', () => {
   expect([42, 42, 42].zipWith([0, 0, 0], (a, b) => a + b)).toEqual([42, 42, 42])
   expect([42, 42, 42].zipWith([0, 0], (a, b) => a + b)).toEqual([42, 42])
