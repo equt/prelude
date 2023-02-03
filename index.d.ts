@@ -80,7 +80,7 @@ interface Array<T> {
   /**
    * Group elements using a prediction over an overlapping two-windowed view
    * */
-  group(f: (a: T, b: T) => boolean): Array<Array<T>>
+  group(f: (a: T, b: T) => boolean): Array<NonEmptyArray<T>>
 
   /**
    * Inspect each element in the array.
