@@ -39,8 +39,33 @@ Array.prototype.intersperse = function (element) {
   }, [])
 }
 
+Array.prototype.mapWhile = function <U>(f: (element: unknown) => Nullable<U>) {
+  const accumulator = []
+  for (const element of this) {
+    const mapped = f(element)
+    if (isNonNullable(mapped)) {
+      accumulator.push(mapped)
+    } else {
+      break
+    }
+  }
+  return accumulator
+}
+
 Array.prototype.product = function <U>(other: Array<U>) {
   return this.flatMap(i => other.map<[unknown, U]>(j => [i, j]))
+}
+
+Array.prototype.takeWhile = function (f) {
+  const accumulator: Array<unknown> = []
+  for (const element of this) {
+    if (f(element)) {
+      accumulator.push(element)
+    } else {
+      break
+    }
+  }
+  return accumulator
 }
 
 Array.prototype.zipWith = function <U, O>(

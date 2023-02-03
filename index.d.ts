@@ -83,9 +83,19 @@ interface Array<T> {
   intersperse(element: T): Array<T>
 
   /**
+   * Map elements to another type until the first `Nullable`.
+   */
+  mapWhile<U>(f: (element: T) => Nullable<U>): Array<U>
+
+  /**
    * Create the cartesian product with another array
    */
   product<U>(other: Array<U>): Array<[T, U]>
+
+  /**
+   * Copy elements returning true
+   */
+  takeWhile(f: (element: T) => boolean): Array<T>
 
   /**
    *

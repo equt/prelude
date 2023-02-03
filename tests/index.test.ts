@@ -97,6 +97,16 @@ it('Array.prototype.intersperse', () => {
   expect(([] as Array<number>).intersperse(0)).toEqual([])
 })
 
+it('Array.prototype.mapWhile', () => {
+  expect(
+    [0, 0, 0, 42].mapWhile(n => (n + 42 === 42 ? true : undefined)),
+  ).toEqual([true, true, true])
+  expect(
+    [0, 0, 0, 42, 0].mapWhile(n => (n + 42 === 42 ? true : undefined)),
+  ).toEqual([true, true, true])
+  expect([].mapWhile(n => (n + 42 === 42 ? true : undefined))).toEqual([])
+})
+
 it('Array.prototype.product', () => {
   expect([1, 2, 3].product([4, 5, 6])).toEqual([
     [1, 4],
@@ -109,6 +119,12 @@ it('Array.prototype.product', () => {
     [3, 5],
     [3, 6],
   ])
+})
+
+it('Array.prototype.takeWhile', () => {
+  expect([42, 42, 42, 0].takeWhile(n => n === 42)).toEqual([42, 42, 42])
+  expect([42, 42, 42, 0, 42].takeWhile(n => n === 42)).toEqual([42, 42, 42])
+  expect([].takeWhile(n => n === 42)).toEqual([])
 })
 
 it('Array.prototype.zipWith', () => {
