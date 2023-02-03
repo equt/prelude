@@ -54,6 +54,12 @@ it('Array.prototype.exact', () => {
   expect(() => [42, 42].exact()).toThrow()
 })
 
+it('Array.prototype.extends', () => {
+  const origin = [42]
+  expect(origin.extends(0)).toEqual([42, 0])
+  expect(origin).toEqual([42])
+})
+
 it('Array.prototype.copy', () => {
   const origin = [42, 42],
     copy = origin.copy()

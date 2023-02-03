@@ -53,6 +53,11 @@ interface Array<T> {
   exact(): T
 
   /**
+   * Append one element without mutating the original array
+   */
+  extends(element: T): Array<T>
+
+  /**
    * Create a shallow copy of the array
    */
   copy(): Array<T>

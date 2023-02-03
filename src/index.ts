@@ -5,6 +5,10 @@ Array.prototype.exact = function () {
   throw error
 }
 
+Array.prototype.extends = function (element) {
+  return [...this, element]
+}
+
 Array.prototype.copy = function () {
   return [...this]
 }
