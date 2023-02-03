@@ -2,6 +2,10 @@ type Waitable<A> = Promise<A> | A
 
 type Nullable<A> = A | undefined | null
 
+type NonEmptyArray<A> = Array<A> & { 0: A }
+
+type ReadonlyNonEmptyArray<A> = ReadonlyArray<A> & { readonly 0: A }
+
 /**
  * x falso quodlibet EXPLOSION !!!
  * */
