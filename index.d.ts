@@ -130,3 +130,88 @@ interface Array<T> {
    */
   zip<U>(other: Array<U>): Array<[T, U]>
 }
+
+interface ReadonlyArray<T> {
+  /**
+   * If the array contains only one element, return that exact element. Otherwise, throw `ExactOneElementError`.
+   */
+  exact(): T
+
+  /**
+   * Append one element without mutating the original array
+   */
+  extends(element: T): Array<T>
+
+  /**
+   * Create a shallow copy of the array
+   */
+  copy(): Array<T>
+
+  /**
+   * Chain another array
+   */
+  chain(other: Array<T>): Array<T>
+
+  /**
+   * Return subarrays that each contains a fixed number of elements, determined by `size`. The last chunk will be shorter if there aren't enough elements.
+   */
+  chunks<C extends Array<T> = Array<T>>(size: number): Array<C>
+
+  /**
+   * Mapping the element to an optional new type, then filter out `undefined` and `null`
+   */
+  filterMap<U>(f: (element: T) => Nullable<U>): Array<U>
+
+  /**
+   * Apply the function to the elements and returns the first non-nullable result
+   */
+  findMap<U>(f: (element: T) => Nullable<U>): Nullable<U>
+
+  /**
+   * Group elements using a prediction over an overlapping two-windowed view
+   * */
+  group(f: (a: T, b: T) => boolean): Array<NonEmptyArray<T>>
+
+  /**
+   * Inspect each element in the array.
+   */
+  inspect(f: (element: T) => void): Array<T>
+
+  /**
+   * Insert a particular element betweem each element of the adapted iterator.
+   */
+  intersperse(element: T): Array<T>
+
+  /**
+   * Map elements to another type until the first `Nullable`.
+   */
+  mapWhile<U>(f: (element: T) => Nullable<U>): Array<U>
+
+  /**
+   * Create the cartesian product with another array
+   */
+  product<U>(other: Array<U>): Array<[T, U]>
+
+  /**
+   * Copy elements returning true
+   */
+  takeWhile(f: (element: T) => boolean): Array<T>
+
+  /**
+   * Create an array containing all contiguous, overlapping windows of length `size`.
+   *
+   * The `size` has to be an integer. If the original array is shorter than `size`, an empty array will be returned.
+   */
+  windows<W extends Array<T>>(size: number): Array<W>
+
+  /**
+   *
+   * Zip with another array using function. Rest elements will be discarded if lengths of two arrays are not equal.
+   */
+  zipWith<U, O>(other: Array<U>, f: (a: T, b: U) => O): Array<O>
+
+  /**
+   * Zip with another array. Rest elements will be discarded if lengths of two arrays are not equal.
+   */
+  zip<U>(other: Array<U>): Array<[T, U]>
+}
