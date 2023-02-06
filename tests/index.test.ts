@@ -109,6 +109,7 @@ it('Array.prototype.group', () => {
     [42],
   ])
   expect([].group((a, b) => a === b)).toEqual([])
+  expect([42].group((a, b) => a === b)).toEqual([[42]])
 })
 
 it('Array.prototype.inspect', () => {

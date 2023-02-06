@@ -40,6 +40,7 @@ Array.prototype.findMap = function <U>(f: (element: unknown) => Nullable<U>) {
 
 Array.prototype.group = function (f) {
   if (this.length === 0) return []
+  if (this.length === 1) return [[this.exact()]]
   return this.windows<[unknown, unknown]>(2).reduce<
     Array<NonEmptyArray<unknown>>
   >(
