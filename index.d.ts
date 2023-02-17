@@ -65,7 +65,7 @@ interface Array<T> {
   /**
    * Chain another array
    */
-  chain(other: Array<T>): Array<T>
+  chain(other: ReadonlyArray<T>): Array<T>
 
   /**
    * Return subarrays that each contains a fixed number of elements, determined by `size`. The last chunk will be shorter if there aren't enough elements.
@@ -110,7 +110,7 @@ interface Array<T> {
   /**
    * Create the cartesian product with another array
    */
-  product<U>(other: Array<U>): Array<[T, U]>
+  product<U>(other: ReadonlyArray<U>): Array<[T, U]>
 
   /**
    * Copy elements returning true
@@ -128,12 +128,12 @@ interface Array<T> {
    *
    * Zip with another array using function. Rest elements will be discarded if lengths of two arrays are not equal.
    */
-  zipWith<U, O>(other: Array<U>, f: (a: T, b: U) => O): Array<O>
+  zipWith<U, O>(other: ReadonlyArray<U>, f: (a: T, b: U) => O): Array<O>
 
   /**
    * Zip with another array. Rest elements will be discarded if lengths of two arrays are not equal.
    */
-  zip<U>(other: Array<U>): Array<[T, U]>
+  zip<U>(other: ReadonlyArray<U>): Array<[T, U]>
 }
 
 interface ReadonlyArray<T> {
@@ -155,7 +155,7 @@ interface ReadonlyArray<T> {
   /**
    * Chain another array
    */
-  chain(other: Array<T>): Array<T>
+  chain(other: ReadonlyArray<T>): Array<T>
 
   /**
    * Return subarrays that each contains a fixed number of elements, determined by `size`. The last chunk will be shorter if there aren't enough elements.
@@ -200,7 +200,7 @@ interface ReadonlyArray<T> {
   /**
    * Create the cartesian product with another array
    */
-  product<U>(other: Array<U>): Array<[T, U]>
+  product<U>(other: ReadonlyArray<U>): Array<[T, U]>
 
   /**
    * Copy elements returning true
@@ -218,10 +218,10 @@ interface ReadonlyArray<T> {
    *
    * Zip with another array using function. Rest elements will be discarded if lengths of two arrays are not equal.
    */
-  zipWith<U, O>(other: Array<U>, f: (a: T, b: U) => O): Array<O>
+  zipWith<U, O>(other: ReadonlyArray<U>, f: (a: T, b: U) => O): Array<O>
 
   /**
    * Zip with another array. Rest elements will be discarded if lengths of two arrays are not equal.
    */
-  zip<U>(other: Array<U>): Array<[T, U]>
+  zip<U>(other: ReadonlyArray<U>): Array<[T, U]>
 }
