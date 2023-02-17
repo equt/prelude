@@ -133,6 +133,13 @@ it('Array.prototype.mapWhile', () => {
   expect([].mapWhile(n => (n + 42 === 42 ? true : undefined))).toEqual([])
 })
 
+it('Array.prototype.nullable', () => {
+  expect([].nullable()).toEqual([])
+  expect([42].nullable()).toEqual([42])
+  expect([42, undefined].nullable()).toBeUndefined()
+  expect([42, null].nullable()).toBeUndefined()
+})
+
 it('Array.prototype.product', () => {
   expect([1, 2, 3].product([4, 5, 6])).toEqual([
     [1, 4],

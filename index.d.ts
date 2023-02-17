@@ -103,6 +103,11 @@ interface Array<T> {
   mapWhile<U>(f: (element: T) => Nullable<U>): Array<U>
 
   /**
+   * Return `Nullable` if there is any `Nullable` in the array.
+   */
+  nullable(): Nullable<Array<NonNullable<T>>>
+
+  /**
    * Create the cartesian product with another array
    */
   product<U>(other: Array<U>): Array<[T, U]>

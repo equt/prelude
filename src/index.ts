@@ -84,6 +84,13 @@ Array.prototype.mapWhile = function <U>(f: (element: unknown) => Nullable<U>) {
   return accumulator
 }
 
+Array.prototype.nullable = function () {
+  for (const element of this) {
+    if (isNullable(element)) return undefined
+  }
+  return this
+}
+
 Array.prototype.product = function <U>(other: Array<U>) {
   return this.flatMap(i => other.map<[unknown, U]>(j => [i, j]))
 }
