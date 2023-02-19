@@ -2,10 +2,7 @@
   "extends": "@equt/tsconfig/tsconfig.json",
   "compilerOptions": {
     "incremental": false,
-    "lib": [
-      "ESNext",
-      "DOM"
-    ],
+    "lib": ["ESNext"],
     "module": "ESNext",
     "target": "ES6"
   }

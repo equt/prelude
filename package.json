@@ -5,29 +5,18 @@
   "publishConfig": {
     "access": "public"
   },
-  "main": "./dist/index.cjs",
-  "module": "./dist/index.mjs",
-  "types": "index.d.ts",
-  "exports": {
-    ".": {
-      "require": "./dist/index.cjs",
-      "import": "./dist/index.mjs",
-      "types": "./index.d.ts"
-    }
-  },
   "files": [
     "README.md",
     "LICENSE.md",
-    "dist",
-    "index.d.ts"
+    "dist"
   ],
   "scripts": {
     "prepare": "husky install",
     "build": "unbuild",
     "check": "tsc",
-    "format": "prettier -c {src,tests}/**/*.ts",
-    "lint": "eslint {src,tests}/**/*.ts",
-    "test": "jest --coverage"
+    "format": "prettier -c src/**/*.ts",
+    "lint": "eslint src/**/*.ts",
+    "test": "jest --coverage --passWithNoTests"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.4.2",
