@@ -27,6 +27,10 @@ export class IterableExt<A> implements Iterable<A> {
     return new IterableExt(chain(new IterableExt(this[INNER]), ...iterables))
   }
 
+  cycle(): IterableExt<A> {
+    return new IterableExt(cycle(this[INNER]))
+  }
+
   count(): number {
     let count = 0,
       next = this[INNER].next()
@@ -114,6 +118,22 @@ function* chain<A, B>(
 
   for (const iter of iterables) {
     yield* iter
+  }
+}
+
+function* cycle<A>(iter: Iterator<A, null, never>): Generator<A, null, never> {
+  const cache: Array<A> = []
+
+  let next = iter.next()
+
+  while (!next.done) {
+    cache.push(next.value)
+    yield next.value
+    next = iter.next()
+  }
+
+  while (true) {
+    yield* cache
   }
 }
 
