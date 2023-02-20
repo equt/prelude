@@ -100,6 +100,15 @@ describe('IteratorExt', () => {
     expect(IterableExt.from([1, 2, 3]).find(x => x > 3)).toBeNull()
   })
 
+  it('should find map', () => {
+    expect(
+      IterableExt.from([1, 2, 3]).findMap(x => (x > 2 ? x * 2 : null)),
+    ).toBe(6)
+    expect(
+      IterableExt.from([1, 2, 3]).findMap(x => (x > 3 ? x * 2 : null)),
+    ).toBeNull()
+  })
+
   it('should intersperse', () => {
     const iter = IterableExt.from([1, 2, 3])
     const interspersed = iter.intersperse(0)

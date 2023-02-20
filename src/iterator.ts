@@ -83,6 +83,16 @@ export class IterableExt<A> implements Iterable<A> {
     return null
   }
 
+  findMap<B>(f: (a: A) => Nullable<B>): Nullable<B> {
+    for (const a of this) {
+      const b = f(a)
+      if (isNonNullable(b)) {
+        return b
+      }
+    }
+    return null
+  }
+
   forEach(f: (a: A) => void): void {
     for (const a of this) {
       f(a)
