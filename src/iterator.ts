@@ -21,6 +21,12 @@ export class IterableExt<A> implements Iterable<A> {
     return this[INNER].next()
   }
 
+  chain<B>(
+    ...iterables: ReadonlyArray<Iterable<B> | IterableIterator<B>>
+  ): IterableExt<A | B> {
+    return new IterableExt(chain(new IterableExt(this[INNER]), ...iterables))
+  }
+
   collect(): Array<A> {
     return Array.from(this)
   }
@@ -35,6 +41,23 @@ export class IterableExt<A> implements Iterable<A> {
     }
 
     return count
+  }
+
+  drop(n: number): IterableExt<A> {
+    return new IterableExt(drop(this[INNER], n))
+  }
+
+  every(f: (a: A) => boolean): boolean {
+    for (const a of this) {
+      if (!f(a)) {
+        return false
+      }
+    }
+    return true
+  }
+
+  intersperse(separator: A): IterableExt<A> {
+    return new IterableExt(intersperse(this[INNER], separator))
   }
 
   map<B>(f: (a: A) => B): IterableExt<B> {
@@ -53,21 +76,6 @@ export class IterableExt<A> implements Iterable<A> {
     return accumulator
   }
 
-  chain<B>(
-    ...iterables: ReadonlyArray<Iterable<B> | IterableIterator<B>>
-  ): IterableExt<A | B> {
-    return new IterableExt(chain(new IterableExt(this[INNER]), ...iterables))
-  }
-
-  every(f: (a: A) => boolean): boolean {
-    for (const a of this) {
-      if (!f(a)) {
-        return false
-      }
-    }
-    return true
-  }
-
   some(f: (a: A) => boolean): boolean {
     for (const a of this) {
       if (f(a)) {
@@ -81,31 +89,17 @@ export class IterableExt<A> implements Iterable<A> {
     return new IterableExt(take(this[INNER], n))
   }
 
-  drop(n: number): IterableExt<A> {
-    return new IterableExt(drop(this[INNER], n))
+  zip<B>(other: Iterable<B>): IterableExt<[A, B]> {
+    return this.zipWith(other, (a, b) => [a, b])
   }
 
-  intersperse(separator: A): IterableExt<A> {
-    return new IterableExt(intersperse(this[INNER], separator))
+  zipWith<B, C>(other: Iterable<B>, f: (a: A, b: B) => C): IterableExt<C> {
+    return new IterableExt(zipWith(this[INNER], other[Symbol.iterator](), f))
   }
 
   [Symbol.iterator]() {
     return this
   }
-}
-
-function* map<A, B>(
-  iter: Iterator<A, null, never>,
-  f: (a: A) => B,
-): Generator<B, null, never> {
-  let next = iter.next()
-
-  while (!next.done) {
-    yield f(next.value)
-    next = iter.next()
-  }
-
-  return null
 }
 
 function* chain<A, B>(
@@ -117,21 +111,6 @@ function* chain<A, B>(
   for (const iter of iterables) {
     yield* iter
   }
-}
-
-function* take<A>(
-  iter: Iterator<A, null, never>,
-  n: number,
-): Generator<A, null, never> {
-  let next = iter.next()
-
-  while (!next.done && n > 0) {
-    yield next.value
-    next = iter.next()
-    n--
-  }
-
-  return null
 }
 
 function* drop<A>(
@@ -165,6 +144,52 @@ function* intersperse<A>(iter: Iterator<A, null, never>, separator: A) {
     yield separator
     yield next.value
     next = iter.next()
+  }
+
+  return null
+}
+
+function* map<A, B>(
+  iter: Iterator<A, null, never>,
+  f: (a: A) => B,
+): Generator<B, null, never> {
+  let next = iter.next()
+
+  while (!next.done) {
+    yield f(next.value)
+    next = iter.next()
+  }
+
+  return null
+}
+
+function* take<A>(
+  iter: Iterator<A, null, never>,
+  n: number,
+): Generator<A, null, never> {
+  let next = iter.next()
+
+  while (!next.done && n > 0) {
+    yield next.value
+    next = iter.next()
+    n--
+  }
+
+  return null
+}
+
+function* zipWith<A, B, C>(
+  one: Iterator<A, null, never>,
+  other: Iterator<B, null, never>,
+  f: (a: A, b: B) => C,
+): Generator<C, null, never> {
+  let oneNext = one.next(),
+    otherNext = other.next()
+
+  while (!oneNext.done && !otherNext.done) {
+    yield f(oneNext.value, otherNext.value)
+    oneNext = one.next()
+    otherNext = other.next()
   }
 
   return null
