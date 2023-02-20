@@ -135,11 +135,12 @@ describe('IteratorExt', () => {
   })
 
   it('should map while', () => {
-    const iter = IterableExt.from([1, 2, 3]).mapWhile(x =>
-      x < 3 ? x * 2 : null,
-    )
+    let iter = IterableExt.from([1, 2, 3]).mapWhile(x => (x < 3 ? x * 2 : null))
     expect(iter.next().value).toBe(2)
     expect(iter.next().value).toBe(4)
+    expect(iter.next().done).toBe(true)
+
+    iter = IterableExt.from([]).mapWhile(x => (x < 3 ? x * 2 : null))
     expect(iter.next().done).toBe(true)
   })
 
@@ -171,9 +172,12 @@ describe('IteratorExt', () => {
   })
 
   it('should window', () => {
-    const iter = IterableExt.from([1, 2, 3, 4]).windows(3)
+    let iter = IterableExt.from([1, 2, 3, 4]).windows(3)
     expect(iter.next().value).toEqual([1, 2, 3])
     expect(iter.next().value).toEqual([2, 3, 4])
+    expect(iter.next().done).toBe(true)
+
+    iter = IterableExt.from([1, 2]).windows(3)
     expect(iter.next().done).toBe(true)
   })
 
