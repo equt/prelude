@@ -72,6 +72,11 @@ describe('IteratorExt', () => {
     expect(result).toEqual([1, 2, 3])
   })
 
+  it('should find', () => {
+    expect(IterableExt.from([1, 2, 3]).find(x => x > 2)).toBe(3)
+    expect(IterableExt.from([1, 2, 3]).find(x => x > 3)).toBeNull()
+  })
+
   it('should intersperse', () => {
     const iter = IterableExt.from([1, 2, 3])
     const interspersed = iter.intersperse(0)

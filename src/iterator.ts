@@ -1,3 +1,5 @@
+import type { Nullable } from '.'
+
 const INNER = Symbol('INNER')
 
 export class IterableExt<A> implements Iterable<A> {
@@ -58,6 +60,15 @@ export class IterableExt<A> implements Iterable<A> {
       }
     }
     return true
+  }
+
+  find(f: (a: A) => boolean): Nullable<A> {
+    for (const a of this) {
+      if (f(a)) {
+        return a
+      }
+    }
+    return null
   }
 
   forEach(f: (a: A) => void): void {
