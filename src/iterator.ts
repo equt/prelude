@@ -53,6 +53,10 @@ export class IterableExt<A> implements Iterable<A> {
     return new IterableExt(drop(this[INNER], n))
   }
 
+  dropWhile(f: (a: A) => boolean): IterableExt<A> {
+    return new IterableExt(dropWhile(this[INNER], f))
+  }
+
   every(f: (a: A) => boolean): boolean {
     for (const a of this) {
       if (!f(a)) {
@@ -199,6 +203,24 @@ function* drop<A>(
   while (!next.done && n > 0) {
     next = iter.next()
     n--
+  }
+
+  while (!next.done) {
+    yield next.value
+    next = iter.next()
+  }
+
+  return null
+}
+
+function* dropWhile<A>(
+  iter: Iterator<A, null, never>,
+  f: (a: A) => boolean,
+): Generator<A, null, never> {
+  let next = iter.next()
+
+  while (!next.done && f(next.value)) {
+    next = iter.next()
   }
 
   while (!next.done) {

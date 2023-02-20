@@ -60,6 +60,13 @@ describe('IteratorExt', () => {
     expect(dropped.next().done).toBe(true)
   })
 
+  it('should drop while', () => {
+    const iter = IterableExt.from([1, 2, 3])
+    const dropped = iter.dropWhile(x => x < 3)
+    expect(dropped.next().value).toBe(3)
+    expect(dropped.next().done).toBe(true)
+  })
+
   it('should every', () => {
     expect(IterableExt.from([1, 2, 3]).every(x => x > 0)).toBe(true)
     expect(IterableExt.from([1, 2, 3]).every(x => x > 1)).toBe(false)
