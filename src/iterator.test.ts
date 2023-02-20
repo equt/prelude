@@ -144,6 +144,14 @@ describe('IteratorExt', () => {
     expect(taken.next().done).toBe(true)
   })
 
+  it('should take while', () => {
+    const iter = IterableExt.from([1, 2, 3])
+    const taken = iter.takeWhile(x => x < 3)
+    expect(taken.next().value).toBe(1)
+    expect(taken.next().value).toBe(2)
+    expect(taken.next().done).toBe(true)
+  })
+
   it('should zip', () => {
     const iter = IterableExt.from([1, 2, 3])
     const zipped = iter.zip([4, 5, 6])

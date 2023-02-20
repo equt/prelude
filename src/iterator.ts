@@ -126,6 +126,10 @@ export class IterableExt<A> implements Iterable<A> {
     return new IterableExt(take(this[INNER], n))
   }
 
+  takeWhile(f: (a: A) => boolean): IterableExt<A> {
+    return new IterableExt(takeWhile(this[INNER], f))
+  }
+
   toArray(): Array<A> {
     return Array.from(this)
   }
@@ -307,6 +311,20 @@ function* take<A>(
     yield next.value
     next = iter.next()
     n--
+  }
+
+  return null
+}
+
+function* takeWhile<A>(
+  iter: Iterator<A, null, never>,
+  f: (a: A) => boolean,
+): Generator<A, null, never> {
+  let next = iter.next()
+
+  while (!next.done && f(next.value)) {
+    yield next.value
+    next = iter.next()
   }
 
   return null
