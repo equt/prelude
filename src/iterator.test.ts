@@ -80,6 +80,14 @@ describe('IteratorExt', () => {
     expect(filtered.next().done).toBe(true)
   })
 
+  it('should filter map', () => {
+    const iter = IterableExt.from([1, 2, 3])
+    const filtered = iter.filterMap(x => (x > 1 ? x * 2 : null))
+    expect(filtered.next().value).toBe(4)
+    expect(filtered.next().value).toBe(6)
+    expect(filtered.next().done).toBe(true)
+  })
+
   it('should find', () => {
     expect(IterableExt.from([1, 2, 3]).find(x => x > 2)).toBe(3)
     expect(IterableExt.from([1, 2, 3]).find(x => x > 3)).toBeNull()

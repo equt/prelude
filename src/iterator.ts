@@ -1,4 +1,4 @@
-import type { Nullable } from '.'
+import { isNonNullable, Nullable } from '.'
 
 const INNER = Symbol('INNER')
 
@@ -64,6 +64,10 @@ export class IterableExt<A> implements Iterable<A> {
 
   filter(f: (a: A) => boolean): IterableExt<A> {
     return new IterableExt(filter(this[INNER], f))
+  }
+
+  filterMap<B>(f: (a: A) => Nullable<B>): IterableExt<B> {
+    return new IterableExt(filterMap(this[INNER], f))
   }
 
   find(f: (a: A) => boolean): Nullable<A> {
@@ -215,6 +219,25 @@ function* filter<A>(
     if (f(next.value)) {
       yield next.value
     }
+    next = iter.next()
+  }
+
+  return null
+}
+
+function* filterMap<A, B>(
+  iter: Iterator<A, null, never>,
+  f: (a: A) => Nullable<B>,
+): Generator<B, null, never> {
+  let next = iter.next()
+
+  while (!next.done) {
+    const b = f(next.value)
+
+    if (isNonNullable(b)) {
+      yield b
+    }
+
     next = iter.next()
   }
 
