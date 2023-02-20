@@ -134,6 +134,15 @@ describe('IteratorExt', () => {
     expect(mapped.next().done).toBe(true)
   })
 
+  it('should map while', () => {
+    const iter = IterableExt.from([1, 2, 3]).mapWhile(x =>
+      x < 3 ? x * 2 : null,
+    )
+    expect(iter.next().value).toBe(2)
+    expect(iter.next().value).toBe(4)
+    expect(iter.next().done).toBe(true)
+  })
+
   it('should reduce', () => {
     const iter = IterableExt.from([1, 2, 3])
     const reduced = iter.reduce((acc, x) => acc + x, 0)

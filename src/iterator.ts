@@ -111,6 +111,10 @@ export class IterableExt<A> implements Iterable<A> {
     return new IterableExt(map(this[INNER], f))
   }
 
+  mapWhile<B>(f: (a: A) => Nullable<B>): IterableExt<B> {
+    return new IterableExt(mapWhile(this[INNER], f))
+  }
+
   reduce<B>(f: (accumulator: B, value: A) => B, initial: B): B {
     let accumulator = initial,
       next = this[INNER].next()
@@ -305,6 +309,27 @@ function* map<A, B>(
 
   while (!next.done) {
     yield f(next.value)
+    next = iter.next()
+  }
+
+  return null
+}
+
+function* mapWhile<A, B>(
+  iter: Iterator<A, null, never>,
+  f: (a: A) => Nullable<B>,
+): Generator<B, null, never> {
+  let next = iter.next()
+
+  while (!next.done) {
+    const b = f(next.value)
+
+    if (isNonNullable(b)) {
+      yield b
+    } else {
+      return null
+    }
+
     next = iter.next()
   }
 
