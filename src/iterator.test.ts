@@ -56,6 +56,13 @@ describe('IteratorExt', () => {
     expect(IterableExt.from([1, 2, 3]).every(x => x > 1)).toBe(false)
   })
 
+  it('should for each', () => {
+    const iter = IterableExt.from([1, 2, 3])
+    const result: number[] = []
+    iter.forEach(x => result.push(x))
+    expect(result).toEqual([1, 2, 3])
+  })
+
   it('should intersperse', () => {
     const iter = IterableExt.from([1, 2, 3])
     const interspersed = iter.intersperse(0)

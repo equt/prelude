@@ -56,6 +56,12 @@ export class IterableExt<A> implements Iterable<A> {
     return true
   }
 
+  forEach(f: (a: A) => void): void {
+    for (const a of this) {
+      f(a)
+    }
+  }
+
   intersperse(separator: A): IterableExt<A> {
     return new IterableExt(intersperse(this[INNER], separator))
   }
