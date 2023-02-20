@@ -59,6 +59,11 @@ describe('IteratorExt', () => {
     expect(interspersed.next().done).toBe(true)
   })
 
+  it('should join', () => {
+    const iter = IterableExt.from(['1', '2', '3'])
+    expect(iter.join(', ')).toBe('1, 2, 3')
+  })
+
   it('should map', () => {
     const iter = IterableExt.from([1, 2, 3])
     const mapped = iter.map(x => x * 2)

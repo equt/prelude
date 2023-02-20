@@ -60,6 +60,10 @@ export class IterableExt<A> implements Iterable<A> {
     return new IterableExt(intersperse(this[INNER], separator))
   }
 
+  join(separator: string): string {
+    return this.collect().join(separator)
+  }
+
   map<B>(f: (a: A) => B): IterableExt<B> {
     return new IterableExt(map(this[INNER], f))
   }
