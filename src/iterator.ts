@@ -148,6 +148,10 @@ export class IterableExt<A> implements Iterable<A> {
     return Array.from(this)
   }
 
+  windows<B extends Array<A> = Array<A>>(n: number): IterableExt<B> {
+    return new IterableExt(windows(this[INNER], n))
+  }
+
   zip<B>(other: Iterable<B>): IterableExt<[A, B]> {
     return this.zipWith(other, (a, b) => [a, b])
   }
@@ -359,6 +363,34 @@ function* takeWhile<A>(
 
   while (!next.done && f(next.value)) {
     yield next.value
+    next = iter.next()
+  }
+
+  return null
+}
+
+function* windows<A, B extends Array<A> = Array<A>>(
+  iter: Iterator<A, null, never>,
+  size: number,
+): Generator<B, null, never> {
+  let count = size,
+    next = iter.next()
+  const cache: Array<A> = []
+
+  while (!next.done && count > 0) {
+    cache.push(next.value)
+    next = iter.next()
+    count--
+  }
+
+  if (cache.length < size) return null
+
+  yield cache as B
+
+  while (!next.done) {
+    cache.shift()
+    cache.push(next.value)
+    yield cache as B
     next = iter.next()
   }
 

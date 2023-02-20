@@ -170,6 +170,13 @@ describe('IteratorExt', () => {
     expect(taken.next().done).toBe(true)
   })
 
+  it('should window', () => {
+    const iter = IterableExt.from([1, 2, 3, 4]).windows(3)
+    expect(iter.next().value).toEqual([1, 2, 3])
+    expect(iter.next().value).toEqual([2, 3, 4])
+    expect(iter.next().done).toBe(true)
+  })
+
   it('should zip', () => {
     const iter = IterableExt.from([1, 2, 3])
     const zipped = iter.zip([4, 5, 6])
