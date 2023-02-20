@@ -26,9 +26,9 @@ describe('IteratorExt', () => {
     expect(chained.next().done).toBe(true)
   })
 
-  it('should collect', () => {
+  it('should to array', () => {
     const iter = IterableExt.from([1, 2, 3])
-    expect(iter.collect()).toEqual([1, 2, 3])
+    expect(iter.toArray()).toEqual([1, 2, 3])
   })
 
   it('should count', () => {

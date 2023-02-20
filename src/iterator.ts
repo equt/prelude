@@ -27,10 +27,6 @@ export class IterableExt<A> implements Iterable<A> {
     return new IterableExt(chain(new IterableExt(this[INNER]), ...iterables))
   }
 
-  collect(): Array<A> {
-    return Array.from(this)
-  }
-
   count(): number {
     let count = 0,
       next = this[INNER].next()
@@ -61,7 +57,7 @@ export class IterableExt<A> implements Iterable<A> {
   }
 
   join(separator: string): string {
-    return this.collect().join(separator)
+    return this.toArray().join(separator)
   }
 
   map<B>(f: (a: A) => B): IterableExt<B> {
@@ -91,6 +87,10 @@ export class IterableExt<A> implements Iterable<A> {
 
   take(n: number): IterableExt<A> {
     return new IterableExt(take(this[INNER], n))
+  }
+
+  toArray(): Array<A> {
+    return Array.from(this)
   }
 
   zip<B>(other: Iterable<B>): IterableExt<[A, B]> {
