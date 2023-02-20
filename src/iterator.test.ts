@@ -26,6 +26,15 @@ describe('IteratorExt', () => {
     expect(chained.next().done).toBe(true)
   })
 
+  it('should chunks', () => {
+    const iter = IterableExt.from([1, 2, 3, 4, 5])
+    const chunks = iter.chunks(2)
+    expect(chunks.next().value).toEqual([1, 2])
+    expect(chunks.next().value).toEqual([3, 4])
+    expect(chunks.next().value).toEqual([5])
+    expect(chunks.next().done).toBe(true)
+  })
+
   it('should cycle', () => {
     const iter = IterableExt.from([1, 2, 3]).cycle()
     expect(iter.next().value).toBe(1)

@@ -27,6 +27,10 @@ export class IterableExt<A> implements Iterable<A> {
     return new IterableExt(chain(new IterableExt(this[INNER]), ...iterables))
   }
 
+  chunks<B extends Array<A> = Array<A>>(n: number): IterableExt<B> {
+    return new IterableExt(chunks(this[INNER], n))
+  }
+
   cycle(): IterableExt<A> {
     return new IterableExt(cycle(this[INNER]))
   }
@@ -141,6 +145,30 @@ function* cycle<A>(iter: Iterator<A, null, never>): Generator<A, null, never> {
   while (true) {
     yield* cache
   }
+}
+
+function* chunks<A, B extends Array<A> = Array<A>>(
+  iter: Iterator<A, null, never>,
+  size: number,
+): Generator<B, null, never> {
+  let next = iter.next(),
+    chunk: Array<A> = []
+
+  while (!next.done) {
+    chunk.push(next.value)
+    next = iter.next()
+
+    if (chunk.length === size) {
+      yield chunk as B
+      chunk = []
+    }
+  }
+
+  if (chunk.length > 0) {
+    yield chunk as B
+  }
+
+  return null
 }
 
 function* drop<A>(
