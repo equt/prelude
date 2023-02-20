@@ -62,6 +62,10 @@ export class IterableExt<A> implements Iterable<A> {
     return true
   }
 
+  filter(f: (a: A) => boolean): IterableExt<A> {
+    return new IterableExt(filter(this[INNER], f))
+  }
+
   find(f: (a: A) => boolean): Nullable<A> {
     for (const a of this) {
       if (f(a)) {
@@ -195,6 +199,22 @@ function* drop<A>(
 
   while (!next.done) {
     yield next.value
+    next = iter.next()
+  }
+
+  return null
+}
+
+function* filter<A>(
+  iter: Iterator<A, null, never>,
+  f: (a: A) => boolean,
+): Generator<A, null, never> {
+  let next = iter.next()
+
+  while (!next.done) {
+    if (f(next.value)) {
+      yield next.value
+    }
     next = iter.next()
   }
 
