@@ -231,6 +231,13 @@ export class IterableExt<A> implements Iterable<A> {
   }
 
   /**
+   * Iterate over the iterator and call the given `f` for each element without consuming.
+   */
+  tap(f: (a: A) => void): IterableExt<A> {
+    return new IterableExt(tap(this[INNER], f))
+  }
+
+  /**
    * Collect the iterator into an array.
    */
   toArray(): Array<A> {
@@ -471,6 +478,21 @@ function* takeWhile<A>(
   let next = iter.next()
 
   while (!next.done && f(next.value)) {
+    yield next.value
+    next = iter.next()
+  }
+
+  return null
+}
+
+function* tap<A>(
+  iter: Iterator<A, null, never>,
+  f: (a: A) => void,
+): Generator<A, null, never> {
+  let next = iter.next()
+
+  while (!next.done) {
+    f(next.value)
     yield next.value
     next = iter.next()
   }

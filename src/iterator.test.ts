@@ -279,6 +279,17 @@ describe('IteratorExt', () => {
     expect(origin.next().done).toBeTrue()
   })
 
+  it('should tap', () => {
+    const cache: number[] = []
+
+    const iter = IterableExt.from([1, 2, 3]).tap(x => cache.push(x))
+    expect(iter.next().value).toBe(1)
+    expect(iter.next().value).toBe(2)
+    expect(iter.next().value).toBe(3)
+    expect(iter.next().done).toBeTrue()
+    expect(cache).toEqual([1, 2, 3])
+  })
+
   it('should window', () => {
     let iter = IterableExt.from([1, 2, 3, 4]).windows(3)
     expect(iter.next().value).toEqual([1, 2, 3])
