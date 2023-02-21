@@ -422,7 +422,12 @@ function* zipWith<A, B, C>(
   return null
 }
 
-export const once = <A>(a: A): IterableExt<A> => IterableExt.from([a])
+export const once = <A>(a: A): IterableExt<A> =>
+  IterableExt.from(
+    (function* () {
+      yield a
+    })(),
+  )
 
 export const range = (start: number, end?: number) =>
   IterableExt.from<number>({
