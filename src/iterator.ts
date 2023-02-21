@@ -163,6 +163,10 @@ export class IterableExt<A> implements Iterable<A> {
     }
   }
 
+  group(f: (a: A, b: A) => boolean): IterableExt<IterableExt<A>> {
+    return new IterableExt(group(this[INNER], f))
+  }
+
   /**
    * Intersperse the iterator with the given `separator`.
    */
@@ -427,6 +431,33 @@ function* flatMap<A, B>(
     yield* IterableExt.from(f(next.value))
     next = iter.next()
   }
+
+  return null
+}
+
+function* group<A>(
+  iter: Iterator<A, null, never>,
+  f: (a: A, b: A) => boolean,
+): Generator<IterableExt<A>, null, never> {
+  let next = iter.next()
+  if (next.done) return null
+
+  let cache = [next.value],
+    previous = next.value
+  next = iter.next()
+
+  while (!next.done) {
+    if (f(previous, next.value)) {
+      cache.push(next.value)
+    } else {
+      yield IterableExt.from(cache)
+      cache = [next.value]
+    }
+    previous = next.value
+    next = iter.next()
+  }
+
+  if (cache.length !== 0) yield IterableExt.from(cache)
 
   return null
 }

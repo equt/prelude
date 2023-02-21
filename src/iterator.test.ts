@@ -199,6 +199,23 @@ describe('IteratorExt', () => {
     expect(iter.next().done).toBeTrue()
   })
 
+  it('should group', () => {
+    let iter: IterableExt<Array<number>>
+
+    iter = IterableExt.from([1, 1, 1, 2, 3])
+      .group((a, b) => a === b)
+      .map(iter => iter.toArray())
+    expect(iter.next().value).toEqual([1, 1, 1])
+    expect(iter.next().value).toEqual([2])
+    expect(iter.next().value).toEqual([3])
+    expect(iter.next().done).toBeTrue()
+
+    iter = IterableExt.from<number>([])
+      .group((a, b) => a === b)
+      .map(iter => iter.toArray())
+    expect(iter.next().done).toBeTrue()
+  })
+
   it('should intersperse', () => {
     let iter: IterableExt<number>
 
