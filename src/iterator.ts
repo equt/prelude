@@ -11,12 +11,17 @@ export class IterableExt<A> implements Iterable<A> {
 
   static from<A>(array: ReadonlyArray<A>): IterableExt<A>
   static from<A>(iter: Iterable<A>): IterableExt<A>
-  static from<A>(iter: Iterable<A> | ReadonlyArray<A>) {
+  static from<A>(iter: Iterator<A, null, never>): IterableExt<A>
+  static from<A>(
+    iter: Iterable<A> | Iterator<A, null, never> | ReadonlyArray<A>,
+  ): IterableExt<A> {
     if (Symbol.iterator in iter) {
       return new IterableExt(iter[Symbol.iterator]())
+    } else if ('next' in iter) {
+      return new IterableExt(iter)
     }
     // istanbul ignore next
-    throw new Error()
+    return iter
   }
 
   next(): IteratorResult<A, null> {
