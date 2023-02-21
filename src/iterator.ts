@@ -2,6 +2,11 @@ import { isNonNullable, Nullable } from '.'
 
 const INNER = Symbol('INNER')
 
+export type IntoIterableExt<A> =
+  | ReadonlyArray<A>
+  | Iterable<A>
+  | Iterator<A, null, never>
+
 export class IterableExt<A> implements Iterable<A> {
   readonly [INNER]: Iterator<A>
 
@@ -15,12 +20,7 @@ export class IterableExt<A> implements Iterable<A> {
    * Calling methods on the returned {@link IterableExt} will also consume the passed iterable or
    * iterator but not the array.
    */
-  static from<A>(array: ReadonlyArray<A>): IterableExt<A>
-  static from<A>(iter: Iterable<A>): IterableExt<A>
-  static from<A>(iter: Iterator<A, null, never>): IterableExt<A>
-  static from<A>(
-    iter: Iterable<A> | Iterator<A, null, never> | ReadonlyArray<A>,
-  ): IterableExt<A> {
+  static from<A>(iter: IntoIterableExt<A>): IterableExt<A> {
     if (Symbol.iterator in iter) {
       return new IterableExt(iter[Symbol.iterator]())
     } else if ('next' in iter) {
@@ -38,7 +38,7 @@ export class IterableExt<A> implements Iterable<A> {
    * Chain one or multiple {@link Iterable} or {@link IterableIterator}.
    */
   chain<B>(
-    ...iterables: ReadonlyArray<Iterable<B> | IterableIterator<B>>
+    ...iterables: ReadonlyArray<IntoIterableExt<A>>
   ): IterableExt<A | B> {
     return new IterableExt(chain(new IterableExt(this[INNER]), ...iterables))
   }
@@ -150,7 +150,7 @@ export class IterableExt<A> implements Iterable<A> {
   /**
    * Map elements in the iterator with the given `f` and flatten the result iterable.
    */
-  flatMap<B>(f: (a: A) => Iterable<B> | IterableIterator<B>): IterableExt<B> {
+  flatMap<B>(f: (a: A) => IntoIterableExt<B>): IterableExt<B> {
     return new IterableExt(flatMap(this[INNER], f))
   }
 
@@ -264,15 +264,18 @@ export class IterableExt<A> implements Iterable<A> {
   /**
    * Zip the iterator with another iterator.
    */
-  zip<B>(other: Iterable<B>): IterableExt<[A, B]> {
+  zip<B>(other: IntoIterableExt<B>): IterableExt<[A, B]> {
     return this.zipWith(other, (a, b) => [a, b])
   }
 
   /**
    * Zip the iterator with another iterator using the `f`.
    */
-  zipWith<B, C>(other: Iterable<B>, f: (a: A, b: B) => C): IterableExt<C> {
-    return new IterableExt(zipWith(this[INNER], other[Symbol.iterator](), f))
+  zipWith<B, C>(
+    other: IntoIterableExt<B>,
+    f: (a: A, b: B) => C,
+  ): IterableExt<C> {
+    return new IterableExt(zipWith(this[INNER], other, f))
   }
 
   [Symbol.iterator]() {
@@ -282,12 +285,12 @@ export class IterableExt<A> implements Iterable<A> {
 
 function* chain<A, B>(
   iter: IterableIterator<A>,
-  ...iterables: ReadonlyArray<Iterable<B> | IterableIterator<B>>
+  ...iterables: ReadonlyArray<IntoIterableExt<B>>
 ) {
   yield* iter
 
   for (const iter of iterables) {
-    yield* iter
+    yield* IterableExt.from(iter)
   }
 }
 
@@ -409,12 +412,12 @@ function* filterMap<A, B>(
 
 function* flatMap<A, B>(
   iter: Iterator<A, null, never>,
-  f: (a: A) => Iterable<B> | IterableIterator<B>,
+  f: (a: A) => IntoIterableExt<B>,
 ): Generator<B, null, never> {
   let next = iter.next()
 
   while (!next.done) {
-    yield* f(next.value)
+    yield* IterableExt.from(f(next.value))
     next = iter.next()
   }
 
@@ -551,16 +554,18 @@ function* windows<A, B extends Array<A> = Array<A>>(
 
 function* zipWith<A, B, C>(
   one: Iterator<A, null, never>,
-  other: Iterator<B, null, never>,
+  other: IntoIterableExt<B>,
   f: (a: A, b: B) => C,
 ): Generator<C, null, never> {
+  const otherExt = IterableExt.from(other)
+
   let oneNext = one.next(),
-    otherNext = other.next()
+    otherNext = otherExt.next()
 
   while (!oneNext.done && !otherNext.done) {
     yield f(oneNext.value, otherNext.value)
     oneNext = one.next()
-    otherNext = other.next()
+    otherNext = otherExt.next()
   }
 
   return null

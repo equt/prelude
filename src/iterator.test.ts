@@ -18,7 +18,7 @@ describe('IteratorExt', () => {
     iter = IterableExt.from([]).chain([])
     expect(iter.next().done).toBeTrue()
 
-    iter = IterableExt.from([]).chain(
+    iter = IterableExt.from<number>([]).chain(
       (function* () {
         yield 1
       })(),
