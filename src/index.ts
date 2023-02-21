@@ -7,3 +7,5 @@ export const isNullable = (a: unknown): a is null | undefined =>
 
 export const isNonNullable = <A>(a: A): a is NonNullable<A> =>
   a !== null && a !== undefined
+
+export { IterableExt, range, once } from './iterator'
