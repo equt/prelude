@@ -36,11 +36,16 @@ describe('IteratorExt', () => {
   })
 
   it('should cycle', () => {
-    const iter = IterableExt.from([1, 2, 3]).cycle()
+    let iter: IterableExt<number>
+
+    iter = IterableExt.from([1, 2, 3]).cycle()
     expect(iter.next().value).toBe(1)
     expect(iter.next().value).toBe(2)
     expect(iter.next().value).toBe(3)
     expect(iter.next().value).toBe(1)
+
+    iter = IterableExt.from([]).cycle()
+    expect(iter.next().done).toBe(true)
   })
 
   it('should to array', () => {

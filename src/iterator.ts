@@ -187,9 +187,11 @@ function* cycle<A>(iter: Iterator<A, null, never>): Generator<A, null, never> {
     next = iter.next()
   }
 
-  while (true) {
+  while (true && cache.length !== 0) {
     yield* cache
   }
+
+  return null
 }
 
 function* chunks<A, B extends Array<A> = Array<A>>(
