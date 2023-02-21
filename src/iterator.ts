@@ -9,6 +9,12 @@ export class IterableExt<A> implements Iterable<A> {
     this[INNER] = iter
   }
 
+  /**
+   * Create an {@link IterableExt} from an iterable, iterator, or array.
+   *
+   * Calling methods on the returned {@link IterableExt} will also consume the passed iterable or
+   * iterator but not the array.
+   */
   static from<A>(array: ReadonlyArray<A>): IterableExt<A>
   static from<A>(iter: Iterable<A>): IterableExt<A>
   static from<A>(iter: Iterator<A, null, never>): IterableExt<A>
@@ -28,20 +34,37 @@ export class IterableExt<A> implements Iterable<A> {
     return this[INNER].next()
   }
 
+  /**
+   * Chain one or multiple {@link Iterable} or {@link IterableIterator}.
+   */
   chain<B>(
     ...iterables: ReadonlyArray<Iterable<B> | IterableIterator<B>>
   ): IterableExt<A | B> {
     return new IterableExt(chain(new IterableExt(this[INNER]), ...iterables))
   }
 
+  /**
+   * Iterating over the iterator's elements in a n-size chunk.
+   * The last chunk might contain less than n elements.
+   *
+   * For convenience, this method allows to cast the returned tuple's type.
+   */
   chunks<B extends Array<A> = Array<A>>(n: number): IterableExt<B> {
     return new IterableExt(chunks(this[INNER], n))
   }
 
+  /**
+   * Repeat the original iterator endlessly.
+   *
+   * Note that if the iterator is empty, the resulting iterator will also be empty.
+   */
   cycle(): IterableExt<A> {
     return new IterableExt(cycle(this[INNER]))
   }
 
+  /**
+   * Count the elements number in the iterator.
+   */
   count(): number {
     let count = 0,
       next = this[INNER].next()
@@ -54,14 +77,28 @@ export class IterableExt<A> implements Iterable<A> {
     return count
   }
 
+  /**
+   * Drop the first n elements in the iterator.
+   */
   drop(n: number): IterableExt<A> {
     return new IterableExt(drop(this[INNER], n))
   }
 
+  /**
+   * Drop the element if the `f` returns `true`.
+   *
+   * Since the element has to be popped out for runing the `f`, the very first element that rejects
+   * the `f` will also been removed from the iterator.
+   */
   dropWhile(f: (a: A) => boolean): IterableExt<A> {
     return new IterableExt(dropWhile(this[INNER], f))
   }
 
+  /**
+   * If all elements in the iterator return `true` for the given `f`, return `true`.
+   *
+   * It will also return a vacuously `true` for an empty iterator.
+   */
   every(f: (a: A) => boolean): boolean {
     for (const a of this) {
       if (!f(a)) {
@@ -71,14 +108,23 @@ export class IterableExt<A> implements Iterable<A> {
     return true
   }
 
+  /**
+   * Filter the iterator with the given `f`.
+   */
   filter(f: (a: A) => boolean): IterableExt<A> {
     return new IterableExt(filter(this[INNER], f))
   }
 
+  /**
+   * Filter the iterator with the given `f` and map the result.
+   */
   filterMap<B>(f: (a: A) => Nullable<B>): IterableExt<B> {
     return new IterableExt(filterMap(this[INNER], f))
   }
 
+  /**
+   * Find the first element that returns `true` for the given `f`.
+   */
   find(f: (a: A) => boolean): Nullable<A> {
     for (const a of this) {
       if (f(a)) {
@@ -88,6 +134,9 @@ export class IterableExt<A> implements Iterable<A> {
     return null
   }
 
+  /**
+   * Find the first element that returns a non-null value for the given `f`.
+   */
   findMap<B>(f: (a: A) => Nullable<B>): Nullable<B> {
     for (const a of this) {
       const b = f(a)
@@ -98,28 +147,46 @@ export class IterableExt<A> implements Iterable<A> {
     return null
   }
 
+  /**
+   * Iterate over the iterator and call the given `f` for each element.
+   */
   forEach(f: (a: A) => void): void {
     for (const a of this) {
       f(a)
     }
   }
 
+  /**
+   * Intersperse the iterator with the given `separator`.
+   */
   intersperse(separator: A): IterableExt<A> {
     return new IterableExt(intersperse(this[INNER], separator))
   }
 
+  /**
+   * Call the `Array.prototype.join` on the collected iterator with the `separator`.
+   */
   join(separator: string): string {
     return this.toArray().join(separator)
   }
 
+  /**
+   * Map the iterator with the given `f`.
+   */
   map<B>(f: (a: A) => B): IterableExt<B> {
     return new IterableExt(map(this[INNER], f))
   }
 
+  /**
+   * Map the iterator with the given `f` and returns a non-null value for the given `f`.
+   */
   mapWhile<B>(f: (a: A) => Nullable<B>): IterableExt<B> {
     return new IterableExt(mapWhile(this[INNER], f))
   }
 
+  /**
+   * Reduce the iterator with the given `f` and `initial`.
+   */
   reduce<B>(f: (accumulator: B, value: A) => B, initial: B): B {
     let accumulator = initial,
       next = this[INNER].next()
@@ -132,6 +199,11 @@ export class IterableExt<A> implements Iterable<A> {
     return accumulator
   }
 
+  /**
+   * If any element in the iterator return `true` for the given `f`, return `true`.
+   *
+   * It will also return a vacuously `false` for an empty iterator.
+   */
   some(f: (a: A) => boolean): boolean {
     for (const a of this) {
       if (f(a)) {
@@ -141,26 +213,50 @@ export class IterableExt<A> implements Iterable<A> {
     return false
   }
 
+  /**
+   * Take the first n elements in the iterator.
+   */
   take(n: number): IterableExt<A> {
     return new IterableExt(take(this[INNER], n))
   }
 
+  /**
+   * Take the element if the `f` returns `true`.
+   *
+   * Since the element has to be popped out for runing the `f`, the very first element that rejects
+   * the `f` will also been removed from the iterator.
+   */
   takeWhile(f: (a: A) => boolean): IterableExt<A> {
     return new IterableExt(takeWhile(this[INNER], f))
   }
 
+  /**
+   * Collect the iterator into an array.
+   */
   toArray(): Array<A> {
     return Array.from(this)
   }
 
+  /**
+   * Iterating over the iterator's elements in a fixed-sized n-length contigious overlapping window.
+   * If the n is greater than the iterator's length, it will return an empty iterator.
+   *
+   * For convenience, this method allows to cast the returned tuple's type.
+   */
   windows<B extends Array<A> = Array<A>>(n: number): IterableExt<B> {
     return new IterableExt(windows(this[INNER], n))
   }
 
+  /**
+   * Zip the iterator with another iterator.
+   */
   zip<B>(other: Iterable<B>): IterableExt<[A, B]> {
     return this.zipWith(other, (a, b) => [a, b])
   }
 
+  /**
+   * Zip the iterator with another iterator using the `f`.
+   */
   zipWith<B, C>(other: Iterable<B>, f: (a: A, b: B) => C): IterableExt<C> {
     return new IterableExt(zipWith(this[INNER], other[Symbol.iterator](), f))
   }
@@ -427,6 +523,9 @@ function* zipWith<A, B, C>(
   return null
 }
 
+/**
+ * Create an iterable that yields an element exactly once.
+ */
 export const once = <A>(a: A): IterableExt<A> =>
   IterableExt.from(
     (function* () {
@@ -434,6 +533,11 @@ export const once = <A>(a: A): IterableExt<A> =>
     })(),
   )
 
+/**
+ * Range from `start` to an optional `end` (exclusive).
+ *
+ * If the `end` is not provided, the returned iterable will never terminate.
+ */
 export const range = (start: number, end?: number) =>
   IterableExt.from<number>({
     [Symbol.iterator]() {
