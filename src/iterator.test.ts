@@ -1,6 +1,6 @@
 import 'jest-extended'
 import { Nullable } from '.'
-import { IterableExt, once, range } from './iterator'
+import { empty, IterableExt, once, range } from './iterator'
 
 describe('IteratorExt', () => {
   it('should chain', () => {
@@ -400,6 +400,11 @@ describe('IteratorExt', () => {
     expect(iter.next().value).toBe(2)
     expect(iter.next().value).toBe(3)
     expect(iter.next().done).toBeTrue()
+  })
+
+  it('should be empty', () => {
+    expect(empty().next().done).toBeTrue()
+    expect(empty().next().done).toBeTrue()
   })
 
   it('should be lazy', () => {

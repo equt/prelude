@@ -610,6 +610,20 @@ function* zipWith<A, B, C>(
 }
 
 /**
+ * Create an iterable that immediately completes.
+ */
+export const empty = <A>(): IterableExt<A> =>
+  IterableExt.from({
+    [Symbol.iterator]() {
+      return {
+        next(): IteratorResult<A> {
+          return { done: true, value: null }
+        },
+      }
+    },
+  })
+
+/**
  * Create an iterable that yields an element exactly once.
  */
 export const once = <A>(a: A): IterableExt<A> =>
