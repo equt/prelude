@@ -274,7 +274,40 @@ describe('IteratorExt', () => {
     expect(iter.next().value).toEqual([2, 4])
     expect(iter.next().done).toBeTrue()
 
+    iter = IterableExt.from([1]).product([3, 4])
+    expect(iter.next().value).toEqual([1, 3])
+    expect(iter.next().value).toEqual([1, 4])
+    expect(iter.next().done).toBeTrue()
+
+    iter = IterableExt.from([1, 2]).product([3])
+    expect(iter.next().value).toEqual([1, 3])
+    expect(iter.next().value).toEqual([2, 3])
+    expect(iter.next().done).toBeTrue()
+
     iter = IterableExt.from([]).product([3, 4])
+    expect(iter.next().done).toBeTrue()
+
+    iter = IterableExt.from([1, 2]).product([])
+    expect(iter.next().done).toBeTrue()
+
+    iter = IterableExt.from([]).product([])
+    expect(iter.next().done).toBeTrue()
+
+    iter = IterableExt.from(
+      (function* () {
+        yield 1
+        yield 2
+      })(),
+    ).product(
+      (function* () {
+        yield 3
+        yield 4
+      })(),
+    )
+    expect(iter.next().value).toEqual([1, 3])
+    expect(iter.next().value).toEqual([1, 4])
+    expect(iter.next().value).toEqual([2, 3])
+    expect(iter.next().value).toEqual([2, 4])
     expect(iter.next().done).toBeTrue()
   })
 
@@ -395,10 +428,13 @@ describe('IteratorExt', () => {
   })
 
   it('should range over', () => {
-    const iter = range(1, 4)
+    let iter = range(1, 4)
     expect(iter.next().value).toBe(1)
     expect(iter.next().value).toBe(2)
     expect(iter.next().value).toBe(3)
+    expect(iter.next().done).toBeTrue()
+
+    iter = range(1, 1)
     expect(iter.next().done).toBeTrue()
   })
 

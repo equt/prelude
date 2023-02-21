@@ -199,7 +199,9 @@ export class IterableExt<A> implements Iterable<A> {
    * Create the cartesian product of the iterator with the given `iterable`.
    */
   product<B>(iterable: IntoIterableExt<B>): IterableExt<[A, B]> {
-    return this.flatMap(a => IterableExt.from(iterable).map(b => [a, b]))
+    // FIXME Do not cache the iterable
+    const cache = IterableExt.from(iterable).toArray()
+    return this.flatMap(a => cache.map(b => [a, b]))
   }
 
   /**
@@ -648,7 +650,7 @@ export const range = (start: number, end?: number) =>
           if (end === undefined || (typeof end === 'number' && current < end)) {
             return { done: false, value: current++ }
           } else {
-            return { done: true, value: undefined }
+            return { done: true, value: null }
           }
         },
       }
