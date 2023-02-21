@@ -1,3 +1,5 @@
+import 'jest-extended'
+import { Nullable } from '.'
 import { IterableExt, once, range } from './iterator'
 
 describe('IteratorExt', () => {
