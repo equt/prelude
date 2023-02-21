@@ -348,11 +348,15 @@ function* take<A>(
   iter: Iterator<A, null, never>,
   n: number,
 ): Generator<A, null, never> {
-  let next = iter.next()
+  let done = false
 
-  while (!next.done && n > 0) {
+  while (n > 0 && !done) {
+    const next = iter.next()
+    if (next.done) {
+      done = true
+      return null
+    }
     yield next.value
-    next = iter.next()
     n--
   }
 

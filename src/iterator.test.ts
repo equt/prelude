@@ -168,11 +168,20 @@ describe('IteratorExt', () => {
   })
 
   it('should take', () => {
-    const iter = IterableExt.from([1, 2, 3])
-    const taken = iter.take(2)
-    expect(taken.next().value).toBe(1)
-    expect(taken.next().value).toBe(2)
-    expect(taken.next().done).toBe(true)
+    let origin: IterableExt<number>, iter: IterableExt<number>
+
+    origin = IterableExt.from([1, 2, 3])
+    iter = origin.take(2)
+    expect(iter.next().value).toBe(1)
+    expect(iter.next().value).toBe(2)
+    expect(iter.next().done).toBe(true)
+    expect(origin.next().value).toBe(3)
+    expect(origin.next().done).toBe(true)
+
+    origin = IterableExt.from([])
+    iter = origin.take(2)
+    expect(iter.next().done).toBe(true)
+    expect(origin.next().done).toBe(true)
   })
 
   it('should take while', () => {
