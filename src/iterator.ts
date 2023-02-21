@@ -192,6 +192,13 @@ export class IterableExt<A> implements Iterable<A> {
   }
 
   /**
+   * Create the cartesian product of the iterator with the given `iterable`.
+   */
+  product<B>(iterable: IntoIterableExt<B>): IterableExt<[A, B]> {
+    return this.flatMap(a => IterableExt.from(iterable).map(b => [a, b]))
+  }
+
+  /**
    * Reduce the iterator with the given `f` and `initial`.
    */
   reduce<B>(f: (accumulator: B, value: A) => B, initial: B): B {

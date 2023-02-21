@@ -249,6 +249,18 @@ describe('IteratorExt', () => {
     expect(origin.next().done).toBeTrue()
   })
 
+  it('should product', () => {
+    let iter = IterableExt.from([1, 2]).product([3, 4])
+    expect(iter.next().value).toEqual([1, 3])
+    expect(iter.next().value).toEqual([1, 4])
+    expect(iter.next().value).toEqual([2, 3])
+    expect(iter.next().value).toEqual([2, 4])
+    expect(iter.next().done).toBeTrue()
+
+    iter = IterableExt.from([]).product([3, 4])
+    expect(iter.next().done).toBeTrue()
+  })
+
   it('should reduce', () => {
     expect(IterableExt.from([1, 2, 3]).reduce((acc, x) => acc + x, 0)).toBe(6)
     expect(IterableExt.from([]).reduce((acc, x) => acc + x, 0)).toBe(0)
