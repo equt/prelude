@@ -148,6 +148,13 @@ export class IterableExt<A> implements Iterable<A> {
   }
 
   /**
+   * Map elements in the iterator with the given `f` and flatten the result iterable.
+   */
+  flatMap<B>(f: (a: A) => Iterable<B> | IterableIterator<B>): IterableExt<B> {
+    return new IterableExt(flatMap(this[INNER], f))
+  }
+
+  /**
    * Iterate over the iterator and call the given `f` for each element.
    */
   forEach(f: (a: A) => void): void {
@@ -394,6 +401,20 @@ function* filterMap<A, B>(
       yield b
     }
 
+    next = iter.next()
+  }
+
+  return null
+}
+
+function* flatMap<A, B>(
+  iter: Iterator<A, null, never>,
+  f: (a: A) => Iterable<B> | IterableIterator<B>,
+): Generator<B, null, never> {
+  let next = iter.next()
+
+  while (!next.done) {
+    yield* f(next.value)
     next = iter.next()
   }
 

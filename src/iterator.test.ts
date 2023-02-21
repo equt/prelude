@@ -183,6 +183,22 @@ describe('IteratorExt', () => {
     expect(origin.next().done).toBeTrue()
   })
 
+  it('should flat map', () => {
+    let iter: IterableExt<number>
+
+    iter = IterableExt.from([1, 2, 3]).flatMap(x => [x, x * 2])
+    expect(iter.next().value).toBe(1)
+    expect(iter.next().value).toBe(2)
+    expect(iter.next().value).toBe(2)
+    expect(iter.next().value).toBe(4)
+    expect(iter.next().value).toBe(3)
+    expect(iter.next().value).toBe(6)
+    expect(iter.next().done).toBeTrue()
+
+    iter = IterableExt.from([]).flatMap(x => [x, x * 2])
+    expect(iter.next().done).toBeTrue()
+  })
+
   it('should intersperse', () => {
     let iter: IterableExt<number>
 
