@@ -247,6 +247,8 @@ function* dropWhile<A>(
     next = iter.next()
   }
 
+  next = iter.next()
+
   while (!next.done) {
     yield next.value
     next = iter.next()
