@@ -2,7 +2,7 @@
   "name": "@equt/prelude",
   "version": "0.2.1",
   "license": "MIT",
-  "main": "dist/index.js",
+  "main": "dist/index.cjs",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
   "publishConfig": {
@@ -41,6 +41,7 @@
     "entries": [
       "src/index"
     ],
+    "declaration": true,
     "clean": true,
     "rollup": {
       "emitCJS": true
