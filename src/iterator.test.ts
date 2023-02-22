@@ -316,6 +316,18 @@ describe('IteratorExt', () => {
     expect(IterableExt.from([]).reduce((acc, x) => acc + x, 0)).toBe(0)
   })
 
+  it('should reduce while', () => {
+    expect(
+      IterableExt.from([1, 2, 3]).reduceWhile((acc, x) => acc + x, 0),
+    ).toBe(6)
+    expect(
+      IterableExt.from([1, -1, 1]).reduceWhile(
+        (acc, x) => (x > 0 ? acc + x : null),
+        0,
+      ),
+    ).toBeNil()
+  })
+
   it('should some', () => {
     expect(IterableExt.from([1, 2, 3]).some(x => x > 2)).toBeTrue()
     expect(IterableExt.from([1, 2, 3]).some(x => x > 3)).toBe(false)

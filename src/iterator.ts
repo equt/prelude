@@ -220,6 +220,30 @@ export class IterableExt<A> implements Iterable<A> {
   }
 
   /**
+   * Reduce the iterator with the given `f` and `initial`, immediately terminates after the first
+   * nullable value get returned.
+   */
+  reduceWhile<B>(
+    f: (accumulator: B, value: A) => Nullable<B>,
+    initial: B,
+  ): Nullable<B> {
+    let accumulator = initial,
+      next = this[INNER].next()
+
+    while (!next.done) {
+      const result = f(accumulator, next.value)
+      if (isNonNullable(result)) {
+        accumulator = result
+      } else {
+        return null
+      }
+      next = this[INNER].next()
+    }
+
+    return accumulator
+  }
+
+  /**
    * If any element in the iterator return `true` for the given `f`, return `true`.
    *
    * It will also return a vacuously `false` for an empty iterator.
