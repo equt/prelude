@@ -223,7 +223,7 @@ export class IterableExt<A> implements Iterable<A> {
    * Reduce the iterator with the given `f` and `initial`, immediately terminates after the first
    * nullable value get returned.
    */
-  reduceWhile<B>(
+  reduceNullable<B>(
     f: (accumulator: B, value: A) => Nullable<B>,
     initial: B,
   ): Nullable<B> {

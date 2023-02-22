@@ -318,10 +318,10 @@ describe('IteratorExt', () => {
 
   it('should reduce while', () => {
     expect(
-      IterableExt.from([1, 2, 3]).reduceWhile((acc, x) => acc + x, 0),
+      IterableExt.from([1, 2, 3]).reduceNullable((acc, x) => acc + x, 0),
     ).toBe(6)
     expect(
-      IterableExt.from([1, -1, 1]).reduceWhile(
+      IterableExt.from([1, -1, 1]).reduceNullable(
         (acc, x) => (x > 0 ? acc + x : null),
         0,
       ),
