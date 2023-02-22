@@ -289,6 +289,19 @@ export class IterableExt<A> implements Iterable<A> {
   }
 
   /**
+   * Collect the iterator into an array, if any element is `Nullable`, return `Nullable`.
+   */
+  toNullableArray(): Nullable<Array<NonNullable<A>>> {
+    return this.reduceNullable<Array<NonNullable<A>>>((accumulator, value) => {
+      if (isNonNullable(value)) {
+        accumulator.push(value)
+        return accumulator
+      }
+      return null
+    }, [])
+  }
+
+  /**
    * Iterating over the iterator's elements in a fixed-sized n-length contigious overlapping window.
    * If the n is greater than the iterator's length, it will return an empty iterator.
    *

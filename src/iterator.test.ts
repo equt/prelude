@@ -65,6 +65,25 @@ describe('IteratorExt', () => {
     expect(iter.toArray()).toEqual([])
   })
 
+  it('should to nullable array', () => {
+    let iter: IterableExt<Nullable<number>>
+
+    iter = IterableExt.from([1, 2, 3])
+    expect(iter.toNullableArray()).toEqual([1, 2, 3])
+
+    iter = IterableExt.from([])
+    expect(iter.toNullableArray()).toEqual([])
+
+    iter = IterableExt.from([1, 2, null])
+    expect(iter.toNullableArray()).toBeNil()
+
+    iter = IterableExt.from([1, 2, undefined])
+    expect(iter.toNullableArray()).toBeNil()
+
+    iter = IterableExt.from([0, 1, 2])
+    expect(iter.toNullableArray()).toEqual([0, 1, 2])
+  })
+
   it('should count', () => {
     let iter: IterableExt<number>
 
